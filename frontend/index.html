@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aura Essentials</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav__logo">Aura Essentials</div>
+    <ul class="nav__links">
+      <li><a href="#catalog">Catalog</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero__content">
+      <h1 class="hero__title">Elevate Your&nbsp;Lifestyle</h1>
+      <p class="hero__subtitle">Curated essentials for the modern aesthetic.</p>
+      <a href="#catalog" class="btn">Explore Collection</a>
+    </div>
+  </section>
+
+  <!-- Catalog -->
+  <section id="catalog" class="catalog section">
+    <h2 class="section__title">Our Collection</h2>
+    <div class="catalog__grid" id="catalogGrid">
+      <!-- Products rendered by JS -->
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="about section">
+    <div class="about__inner">
+      <h2 class="section__title">About Us</h2>
+      <p>
+        Aura Essentials curates lifestyle products that blend minimalist design with everyday
+        functionality. Every piece is chosen to bring harmony, beauty, and intention to your space.
+      </p>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="contact section">
+    <h2 class="section__title">Get in Touch</h2>
+    <p class="contact__intro">Have a question or a special request? We'd love to hear from you.</p>
+
+    <form class="contact__form" id="contactForm" novalidate>
+      <div class="form__group">
+        <label for="name">Name <span aria-hidden="true">*</span></label>
+        <input type="text" id="name" name="name" placeholder="Your name" required />
+      </div>
+      <div class="form__group">
+        <label for="email">Email <span aria-hidden="true">*</span></label>
+        <input type="email" id="email" name="email" placeholder="your@email.com" required />
+      </div>
+      <div class="form__group">
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000" />
+      </div>
+      <div class="form__group">
+        <label for="message">Message <span aria-hidden="true">*</span></label>
+        <textarea id="message" name="message" rows="4" placeholder="Write your message…" required></textarea>
+      </div>
+
+      <p class="form__status" id="formStatus" aria-live="polite"></p>
+      <button type="submit" class="btn">Send Message</button>
+    </form>
+
+    <!-- Social / WhatsApp links -->
+    <div class="contact__socials">
+      <a href="https://wa.me/15550000000" target="_blank" rel="noopener noreferrer" class="social-link social-link--whatsapp">
+        WhatsApp
+      </a>
+      <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer" class="social-link social-link--instagram">
+        Instagram
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; <span id="year"></span> Aura Essentials. All rights reserved.</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

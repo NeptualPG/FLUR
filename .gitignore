@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+# Environment files
+.env
+
+# SQLite database file
+*.db
+backend/data/
+
+# OS / editor
+.DS_Store
+.vscode/
+*.swp
