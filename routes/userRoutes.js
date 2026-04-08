@@ -1,61 +1,107 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/user');
 
-// 
+const {
+    getUsers,
+    getUserById,
+    createUser,
+    updateUser,
+    deleteUser
+} = require('../controller/userController');
+
+
+router.get('/', getUsers);
+router.get('/:id', getUserById);
+router.post('/', createUser);
+router.put('/:id', updateUser);
+router.delete('/:id', deleteUser);
+
+
+
+module.exports = router;
+
+
+
+// ===== OLD version ===========
+
+/* 
+// utils
 const errorHandler = require('../utils/errorHandler.js');
+const validateUser = require('../validators/validateUser.js');
 
-// I didn't know that the try catch to report a status 500 were necessary
-// that equal is a bit repeated code
+// I learned that try/catch is necessary to handle errors in async code
+// and avoid crashing the server (instead we return a 500 status)
+// errorHandler helps to avoid repeating the same response logic
 
-// GET User
+
+// GET users
 router.get('/users', async (req,res) => {
     try {
         const users = await User.find();
         res.json(users);
     } catch (err){
-
-        // before
-        // return res.status(500).json({ error : err.message || "Server error"});
-
+        // before I was writing the response manually every time
+        // now I centralize that logic
         return errorHandler(res, err);
-
     }
 })
 
-// POST User
-router.post('/users', async(req, res) => {
-    try {
-        const {name, age} = req.body;
 
-        if(!name || !age) {
-            return errorHandler(res, err, 400);
+// GET user by id
+router.get('/users/:id', async (req,res) => {
+    try {
+        const user = await User.findById(req.params.id);
+
+        // if the user doesn't exist we return 404
+        if (!user){
+            return errorHandler(res, null, 404, "User not found");
         }
-        
-        const newUser = new User ({name, age}); 
+
+        res.json(user);
+    } catch (err){
+        // this can fail if the id is invalid or DB fails
+        return errorHandler(res, err);
+    }
+})
+
+
+// POST user
+router.post('/users', async(req, res) => {
+
+    // validating before touching DB (better performance and cleaner errors)
+    const error = validateUser(req.body);
+    if (error){
+        return res.status(400).json({error});
+    }
+
+    try {
+        const newUser = new User (req.body); 
         await newUser.save();
         
-        // this is a response that we are going to give after save the data
+        // response after saving user
         res.status(201).json({
             message: "User created",
             data: newUser 
         })
+
     } catch(err) {
         return errorHandler(res, err);
     }
 })
 
-// PUT User
+
+// PUT user
 router.put('/users/:id', async (req,res)=> {
     try{
         const updatedUser = await User.findByIdAndUpdate(
             req.params.id,
             req.body,
-            { new:true}
+            { new:true } // return updated version instead of old
         );
 
+        // if no user found with that id
         if(!updatedUser){
-            return errorHandler(res, err, 404,"User not found")
+            return errorHandler(res, null, 404,"User not found")
         }
 
         res.json(updatedUser);
@@ -64,85 +110,16 @@ router.put('/users/:id', async (req,res)=> {
     }
 })
 
-// DELETE User
-router.delete('/users/:id', async(req,res) => {
-    try{const express = require('express');
-const router = express.Router();
-const User = require('../models/user');
 
-// 
-const errorHandler = require('../utils/errorHandler.js');
-
-// I didn't know that the try catch to report a status 500 were necessary
-// that equal is a bit repeated code
-
-// GET User
-router.get('/users', async (req,res) => {
-    try {
-        const users = await User.find();
-        res.json(users);
-    } catch (err){
-
-        // before
-        // return res.status(500).json({ error : err.message || "Server error"});
-
-        return errorHandler(res, err);
-
-    }
-})
-
-// POST User
-router.post('/users', async(req, res) => {
-    try {
-
-        const {name, age} = req.body;
-        
-        if(!name || !age) {
-            return errorHandler(res, err, 400);
-        }
-        
-        const newUser = new User ({name, age}); 
-        await newUser.save();
-        
-        // this is a response that we are going to give after save the data
-        res.status(201).json({
-            message: "User created",
-            data: newUser 
-        })
-    } catch(err) {
-        return errorHandler(res, err);
-    }
-})
-
-// PUT User
-router.put('/users/:id', async (req,res)=> {
-    try{
-        const updatedUser = await User.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            { new:true}
-        );
-
-        if(!updatedUser){
-            return errorHandler(res, err, 404,"User not found")
-        }
-
-        res.json(updatedUser);
-    }catch (err){
-        return errorHandler(res, err);
-    }
-})
-
-// DELETE User
+// DELETE user
 router.delete('/users/:id', async(req,res) => {
     try{
-        // User is like the table we are modifying
+        // delete user by id
         const deletedUser = await User.findByIdAndDelete(req.params.id);
 
+        // if the user doesn't exist
         if (!deletedUser){
-            // old:
-            // return res.status(404).json({error: "User not found"});
-            return errorHandler(res, err, 404,"User not found")
+            return errorHandler(res, null, 404,"User not found")
         }
 
         res.json({ message : "User deleted"});
@@ -151,20 +128,5 @@ router.delete('/users/:id', async(req,res) => {
     }
 })
 
-module.exports = router;
-        // User is like the table we are modifying
-        const deletedUser = await User.findByIdAndDelete(req.params.id);
 
-        if (!deletedUser){
-            // old:
-            // return res.status(404).json({error: "User not found"});
-            return errorHandler(res, err, 404,"User not found")
-        }
-
-        res.json({ message : "User deleted"});
-    }catch(err){
-        return errorHandler(res, err);
-    }
-})
-
-module.exports = router;
+*/
