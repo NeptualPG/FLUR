@@ -19,7 +19,7 @@ const getUsers = async(req, res) => {
 //GET user by id 
 const getUserById = async(req, res) => {
     try {
-        const user = await User.findById(req.param.id);
+        const user = await User.findById(req.params.id);
 
         if (!user){
             return errorHandler(req, null, 400, "User not found");
@@ -71,7 +71,7 @@ const updateUser = async (req, res) => {
 //DELETE user
 const deleteUser = async (req, res) => {
     try {
-        const deleteUser = await User.findByIdAndDelete(req.param.id);
+        const deleteUser = await User.findByIdAndDelete(req.params.id);
 
         if(!deletedUser) {
             return errorHandler(res, null, 404, "User not found");
@@ -81,6 +81,22 @@ const deleteUser = async (req, res) => {
     } catch(err) {
         return errorHandler(res, err);
     }
+}
+
+const login = async(req, res) =>{
+    const { email, password } = req.body;
+
+    const user = await User.findOne({email});
+    if(!user) {
+        return res.status(400).json({ error: ""})
+    }
+
+    const isMatch = await user.comparePassword(password);
+    if(!isMatch) {
+        return res.status(400).json({error: "Invalid credentials"});
+    }
+
+    res.json({ message: "login succesful" });
 }
 
 module.exports = {
