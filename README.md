@@ -25,3 +25,7 @@ curl example:
         -H "Content-Type: application/json" \
         -d '{"name":"Updated","age":30}'
 
+# Progress
+
+this code just has user api to start and I'm going to start to put more content
+but while I'm going continue with the frontend to go implment at time
